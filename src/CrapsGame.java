@@ -4,55 +4,52 @@ import java.util.Scanner;
 public class CrapsGame {
 
     public static void main(String[] args) {
-        // Create Scanner and Random objects
-        Scanner scanner = new Scanner(System.in);
-        Random random = new Random();
-        String playAgain;
+        Scanner input = new Scanner(System.in);
+        Random rnd = new Random();
+        boolean playAgain = true;
 
-        do {
-            // Initial roll of two dice
-            int die1 = random.nextInt(6) + 1; // Generates a random int between 1 and 6
-            int die2 = random.nextInt(6) + 1; // Generates a random int between 1 and 6
+        while (playAgain) {
+            int die1 = rnd.nextInt(6) + 1;
+            int die2 = rnd.nextInt(6) + 1;
             int sum = die1 + die2;
 
-            System.out.println("You rolled " + die1 + " + " + die2 + " = " + sum);
+            System.out.println("You rolled: " + die1 + " + " + die2 + " = " + sum);
 
-            // Check for initial win or loss
-            if (sum == 7 || sum == 11) {
-                System.out.println("Congratulations, you rolled a natural! You win!");
-            } else if (sum == 2 || sum == 3 || sum == 12) {
-                System.out.println("Sorry, you crapped out! You lose.");
+            if (sum == 2 || sum == 3 || sum == 12) {
+                System.out.println("It is craps. You lose.");
+            } else if (sum == 7 || sum == 11) {
+                System.out.println("It is natural. You win.");
             } else {
-                // Continue rolling for the point
                 int point = sum;
-                System.out.println("The point is now " + point);
+                System.out.println("The point is now: " + point + ". You win by making point sum or you lose by making a 7.");
 
-                boolean keepRolling = true;
-                while (keepRolling) {
-                    System.out.println("Trying for point...");
-                    die1 = random.nextInt(6) + 1;
-                    die2 = random.nextInt(6) + 1;
-                    int rollSum = die1 + die2;
+                boolean rolling = true;
 
-                    System.out.println("You rolled " + die1 + " + " + die2 + " = " + rollSum);
+                while (rolling) {
+                    die1 = rnd.nextInt(6) + 1;
+                    die2 = rnd.nextInt(6) + 1;
+                    sum = die1 + die2;
+                    System.out.println("You rolled: " + die1 + " + " + die2 + " = " + sum);
 
-                    if (rollSum == point) {
-                        System.out.println("You made the point! You win!");
-                        keepRolling = false;
-                    } else if (rollSum == 7) {
+                    if (sum == point) {
+                        System.out.println("You made the point. You win.");
+                        rolling = false;
+                    } else if (sum == 7) {
                         System.out.println("You rolled a 7. You lose.");
-                        keepRolling = false;
+                        rolling = false;
+                    } else {
+                        System.out.println("Trying for point.");
                     }
                 }
             }
 
-            // Prompt user to play again
-            System.out.print("\nPlay again? (yes/no): ");
-            playAgain = scanner.next();
-
-        } while (playAgain.equalsIgnoreCase("yes"));
-
-        System.out.println("Thanks for playing!");
-        scanner.close();
+            // Prompt to play again
+            System.out.print("Do you want to play again? (y/n): ");
+            String response = input.nextLine();
+            if (!response.equalsIgnoreCase("y")) {
+                playAgain = false;
+                System.out.println("Thanks for playing!");
+            }
+        }
     }
 }
